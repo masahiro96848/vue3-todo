@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
+import router from "./router";
 
 // Font Awesome
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -16,4 +17,4 @@ library.add(fas);
 dom.watch();
 
 // componentを追加
-createApp(App).component("font-awesome-icon", FontAwesomeIcon).mount("#app");
+createApp(App).use(router).component("font-awesome-icon", FontAwesomeIcon).mount("#app");
