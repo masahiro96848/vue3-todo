@@ -1,10 +1,23 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import AppNavi, { MenuItem } from "./components/AppNavi.vue";
+
+const menuItems: MenuItem[] = [
+    {
+        type: "heading",
+        title: "Main",
+    },
+    {
+        type: "menu",
+        title: "ToDo",
+        icon: "fa-list",
+        url: "/todo",
+    },
+];
 </script>
 
 <template>
     <router-view />
+    <AppNavi title="Todo App" :menu-items="menuItems"></AppNavi>
 </template>
 
 <style scoped>
