@@ -1,5 +1,19 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import { createApp } from "vue";
+import "./style.css";
+import App from "./App.vue";
 
-createApp(App).mount('#app')
+// Font Awesome
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { dom } from "@fortawesome/fontawesome-svg-core";
+
+// Bootstrap 5 + SB Admin
+import "startbootstrap-sb-admin/src/scss/styles.scss";
+
+// アイコンをライブラリに追加して、DOM経由(class)で参照できるようにする。
+library.add(fas);
+dom.watch();
+
+// componentを追加
+createApp(App).component("font-awesome-icon", FontAwesomeIcon).mount("#app");
