@@ -1,42 +1,54 @@
 <script setup lang="ts">
+import { reactive } from "vue";
 import { Task } from "../models/Task";
+import TaskAdd from "../components/TaskAdd.vue";
+import TaskList from "../components/TaskList.vue";
 
-defineProps<{ tasks: Task[] }>();
+const tasks: Task[] = reactive([
+    {
+        id: 1,
+        title: "起きる",
+        done: false,
+    },
+    {
+        id: 2,
+        title: "着替える",
+        done: false,
+    },
+]);
 
-const emit = defineEmits<{
-    (eventName: "done", id: number): void;
-    (eventName: "delete", id: number): void;
-}>();
+// taskを検索し、フラグを更新する。
+const addTask = (newTaskTitle: string) => {
+    let newTask: Task = {
+        id: Date.now(),
+        title: newTaskTitle,
+        done: false,
+    };
+    tasks.push(newTask);
+};
+
+// taskを検索し、フラグを更新する。
+const doneTask = (id: number) => {
+    let task = tasks.find((t) => t.id === id);
+    if (task !== undefined) {
+        task.done = !task.done;
+    }
+};
+
+// taskを削除する。
+const deleteTask = (id: number) => {
+    tasks.forEach((task, index) => {
+        if (task.id == id) tasks.splice(index, 1);
+    });
+};
 </script>
 
 <template>
-    <table class="table table-striped align-middle mt-4">
-        <thead>
-            <tr>
-                <th scope="col" width="50">#</th>
-                <th scope="col" width="600">Task</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <template v-for="(task, index) in tasks" : key="index">
-                <tr :class="{ 'table-primary': task.done }">
-                    <td>
-                        <input type="checkbox" class="form-check-input" :checked="task.done" @click="emit('done', task.id)" />
-                    </td>
-                    <td>
-                        <label v-if="task.done" class="form-check-label">
-                            <del>{{ task.title }}</del>
-                        </label>
-                        <label v-else class="form-check-label">
-                            {{ task.title }}
-                        </label>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger" @click="emit('delete', task.id)"><i class="fas fa-trash-alt"></i></button>
-                    </td>
-                </tr>
-            </template>
-        </tbody>
-    </table>
+    <h1 class="mt-4">Todo List</h1>
+    <div class="row">
+        <div class="col-xl-6 col-md-6">
+            <TaskAdd @add="(newTaskTitle) => addTask(newTaskTitle)"></TaskAdd>
+            <TaskList :tasks="tasks" @delete="(id) => deleteTask(id)" @done="(id) => doneTask(id)"></TaskList>
+        </div>
+    </div>
 </template>
